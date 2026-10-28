@@ -132,6 +132,10 @@ later, with no chapter around it.
   that line. If you are not sure a fact is true, leave it out.
 - When the book gives its own judgment (praise, blame, "the best", "the
   first"), say it is the book's view: "Theo sách, ...".
+- Never add your own comment, irony or conclusion ("Người sau này làm giám
+  đốc Mossad từng bị loại..."). If a sentence is neither in the book nor a
+  known fact on a `Ngoài sách:` line, delete it before you show the notes.
+  Do not leave it for the user to delete.
 
 **What to skip.** Filler, repeats, small talk of the author, ideas already
 in the book file's `Done` list (unless the new part adds something - then
@@ -139,6 +143,12 @@ write one better note and say which old one it replaces).
 
 **How many.** Quality over count. A rough guide: 3 to 6 notes per 3,500
 characters for facts and ideas; a good story is one card however long.
+A window that is mostly in `Done` gives few new notes, and that is right:
+say how much of the window was already done.
+
+**Read what was asked.** "The first 3,500 characters of chapter 1" starts at
+the chapter's first word, even if that part is in `Done`. Report the real
+range you read (pages and roughly which part), not the range you meant to.
 
 ## Output file
 
@@ -189,8 +199,10 @@ Keep `Done` lines short: page, topic, a few words. It is for dedupe, not a copy.
 2. Show the user, in Vietnamese:
    - the file path, the pages or characters read, and the note count,
    - which legi section to open before pasting,
-   - the notes themselves, each with a small tag: `[nguyên văn]`,
-     `[rút gọn]`, `[tóm tắt]`, `[story]`, `[quy tắc]`, `[bức tranh lớn]`,
-     plus `+ngoài sách` when it has an outside line,
+   - the notes themselves, each tagged with its form from the profile
+     (`[nguyên văn]`, `[rút gọn]`, `[tóm tắt]`, `[story]`, `[nhân vật]`,
+     `[câu hay]`, `[nguyên tắc]`, `[quy tắc]`, `[câu mẫu]`,
+     `[bức tranh lớn]`), plus `+ngoài sách` when it has an outside line.
+     A quote with added context is `[câu hay]`, not `[nguyên văn]`,
    - one line: "Đã copy, mở đúng section trong legi rồi dán vào ô nhập."
 3. Stop. Do not open legi or change anything else.
