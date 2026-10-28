@@ -6,7 +6,7 @@ order: 1
 
 ## Dùng khi
 
-Bạn đang đọc hoặc nghe một cuốn sách (PDF, file .txt hay đoạn copy, tiếng Anh hay tiếng Việt) và muốn giữ lại những gì đáng nhớ trong legi. Mỗi ghi chú phải tự hiểu được khi đứng một mình, vì Daily chỉ hiện một câu, vài tháng sau
+Bạn đang đọc hoặc nghe một cuốn sách hay xem video (PDF, file .txt, thư mục transcript, đoạn copy, tiếng Anh hay tiếng Việt) và muốn giữ lại những gì đáng nhớ trong legi. Mỗi ghi chú phải tự hiểu được khi đứng một mình, vì Daily chỉ hiện một câu, vài tháng sau
 
 ## Lệnh
 
@@ -28,6 +28,7 @@ Bạn đang đọc hoặc nghe một cuốn sách (PDF, file .txt hay đoạn co
 - `geopolitics` - Địa lý, chính trị, lịch sử các nước. Sự kiện, nhân quả, card bối cảnh, card bức tranh lớn
 - `story` - Tình báo, chiến tranh, tiểu sử. Story card trọn vẹn, được viết dài: bối cảnh, diễn biến, khoảnh khắc nghẹt thở, kết cục, bài học
 - `practical` - Giao tiếp, công sở, thói quen. Quy tắc "Khi..., hãy...", câu mẫu nói được ngay, sai và đúng
+- `talk` - Livestream, podcast, phỏng vấn (phụ đề tự động). Giữ nguyên lời người nói, hỏi đáp, chỉ tóm tắt khi quá dài
 
 ## Ví dụ
 

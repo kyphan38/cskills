@@ -1,6 +1,6 @@
 ---
 name: legi-quotes
-description: Turn a book (PDF, .txt or pasted text, English or Vietnamese) into Vietnamese notes ready to paste into legi - quotes, short summaries, story cards, practical rules. Works one window of about 3,500 characters at a time and remembers each book (profile, names, position, what is done). Modes - "check" sets up a new book, "next" reads the next window. Use when the user gives a passage, file or book and asks for quotes, notes, key ideas or "câu hay", or runs /legi-quotes.
+description: Turn a book or a talk (PDF, .txt, a folder of video transcripts, or pasted text, English or Vietnamese) into Vietnamese notes ready to paste into legi - quotes, short summaries, story cards, practical rules, a speaker's own words. Works one window of about 3,500 characters at a time and remembers each book (profile, names, position, what is done). Modes - "check" sets up a new book, "next" reads the next window. Use when the user gives a passage, file or book and asks for quotes, notes, key ideas or "câu hay", or runs /legi-quotes.
 argument-hint: check <file> | next <book> | <file or pasted text> [pages or chapter] [focus]
 allowed-tools: Bash(pbcopy *), Bash(cat *), Bash(wc *), Bash(ls *), Bash(mkdir *)
 ---
@@ -39,6 +39,9 @@ Pick the mode from the arguments. Do only that mode, then stop.
    below) and say the next step: `/legi-quotes next <slug>`. Do not write
    notes in this mode.
 
+A folder (e.g. one speaker's video transcripts) is one book: read the start
+of 2 or 3 files for the check, and list every file under `## Sources`.
+
 If a book file already exists, show it and ask if the user wants to change it.
 
 ### `next <book>` - read the next window
@@ -47,7 +50,8 @@ If a book file already exists, show it and ask if the user wants to change it.
    is none, run `check` on the source the user gives instead.
 2. Read the profile file named in the book file.
 3. Read one window from `position`: about `window` characters (PDF: the next
-   pages, about 2). If a story or argument does not end inside the window,
+   pages, about 2). A book file with `## Sources` (a folder of transcripts)
+   keeps a position per source: continue the first source that is not done. If a story or argument does not end inside the window,
    keep reading until it ends (at most 3 windows). A note must never be cut
    in the middle of a story.
 4. Write the notes (rules below), then update the book file: new `position`,
@@ -88,6 +92,8 @@ One profile per book, in `profiles/` next to this file:
 - `story.md` - stories: spy missions, wars, history told as events,
   biographies. Uses story cards that may be long.
 - `practical.md` - skills: communication, work, habits, negotiation.
+- `talk.md` - spoken sources: livestreams, podcasts, interviews, Q&A clips
+  (auto subtitles). The speaker's own words come first.
 
 If no profile fits well, use the closest one and say what is missing.
 
@@ -128,10 +134,11 @@ later, with no chapter around it.
 - Small context words inside a sentence need no mark: "vùng Lưỡng Hà (Iraq
   và Syria ngày nay)".
 - A whole fact or sentence from outside the book goes on its own last line:
-  `Ngoài sách: ...`. Never mix outside facts into the book's claims without
-  that line. If you are not sure a fact is true, leave it out.
+  `Ngoài sách: ...` (`Ngoài video: ...` for a talk). Never mix outside facts
+  into the source's claims without that line. If you are not sure a fact is true, leave it out.
 - When the book gives its own judgment (praise, blame, "the best", "the
-  first"), say it is the book's view: "Theo sách, ...".
+  first"), say it is the book's view: "Theo sách, ..." (for a talk: "Theo
+  anh Duy, ...", the speaker's name).
 - Never add your own comment, irony or conclusion ("Người sau này làm giám
   đốc Mossad từng bị loại..."). If a sentence is neither in the book nor a
   known fact on a `Ngoài sách:` line, delete it before you show the notes.
