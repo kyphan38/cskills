@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+/* Tokens: values from ../DESIGN.md, gray only. The site follows the device
+   theme (no Settings page), like hub. */
+
+:root {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #f4f4f4;
+  --sunk: #ececec;
+  --ink: #171717;
+  --muted: #555555;
+  --faint: #8a8a8a;
+  --line: #e5e5e5;
+  --line-strong: #d4d4d4;
+  --wash: rgb(23 23 23 / 0.05);
+  --select: rgb(23 23 23 / 0.14);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111111;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --sunk: #0a0a0a;
+    --ink: #e8e8e8;
+    --muted: #a3a3a3;
+    --faint: #7a7a7a;
+    --line: #262626;
+    --line-strong: #3a3a3a;
+    --wash: rgb(232 232 232 / 0.06);
+    --select: rgb(232 232 232 / 0.18);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-sunk: var(--sunk);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-wash: var(--wash);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--select);
+}
+
+:focus {
+  outline: none;
+}
+/* The search box shows focus with its own underline. */
+:focus-visible:not(input) {
+  outline: 1.5px solid var(--faint);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Motion (DESIGN.md: opacity and transform only) ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+
+.rise {
+  animation: rise 220ms var(--ease-soft) both;
+}
+
+/* Page change: content slides 12px in the direction you go, the header stays. */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(.nav-forward),
+::view-transition-old(.nav-back) {
+  animation: 140ms ease-in both vt-out;
+}
+::view-transition-new(.nav-forward) {
+  --vt-from: 12px;
+  animation: 240ms var(--ease-soft) 60ms both vt-in;
+}
+::view-transition-new(.nav-back) {
+  --vt-from: -12px;
+  animation: 240ms var(--ease-soft) 60ms both vt-in;
+}
+::view-transition-old(.nav-forward) {
+  --vt-to: -12px;
+}
+::view-transition-old(.nav-back) {
+  --vt-to: 12px;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    translate: var(--vt-to, 0);
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    translate: var(--vt-from, 0);
+  }
+}
+
+/* The skill name moves from its row to the page title. */
+::view-transition-group(.morph) {
+  animation-duration: 260ms;
+  animation-timing-function: var(--ease-soft);
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 10;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
