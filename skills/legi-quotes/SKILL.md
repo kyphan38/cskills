@@ -57,7 +57,7 @@ If a book file already exists, show it and ask if the user wants to change it.
 
 - A file with a page range or chapter name: read only that part.
 - Pasted text: use it. If no book is named, save it as
-  `~/Downloads/books/passage_<YYYY-MM-DD>.txt` first.
+  `~/Downloads/books/passage_<YYYY-MM-DD>.txt` first (never over an old one).
 - Focus words (e.g. "tập trung đoạn người Anh"): only write notes about that
   focus, but in more detail than usual.
 - If a book file exists for this source, use it (profile, names, Done) and
@@ -142,8 +142,12 @@ characters for facts and ideas; a good story is one card however long.
 
 ## Output file
 
-Write `~/Downloads/books/<slug>_legi.txt` (overwrite; the previous run is
-already in legi). Format for legi's paste:
+Never overwrite a file. Name the output by what it covers:
+`~/Downloads/books/<slug>_legi_<part>.txt`, where `<part>` is the page range
+(`p28-36`), the chapter (`ch3`) or the date (`2026-10-28`) for pasted text.
+If that name is taken, add `-2`, `-3`, ... (`mossad_legi_p28-36-2.txt`).
+Check with `ls` before writing. The same goes for saved pasted text
+(`passage_<date>.txt`, then `passage_<date>-2.txt`). Format for legi's paste:
 
 - One note per block, one blank line between notes. No blank line inside a
   note. No numbers, no bullets, no labels like `[tóm tắt]`.
