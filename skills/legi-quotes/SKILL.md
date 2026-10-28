@@ -166,8 +166,12 @@ If that name is taken, add `-2`, `-3`, ... (`mossad_legi_p28-36-2.txt`).
 Check with `ls` before writing. The same goes for saved pasted text
 (`passage_<date>.txt`, then `passage_<date>-2.txt`). Format for legi's paste:
 
-- One note per block, one blank line between notes. No blank line inside a
-  note. No numbers, no bullets, no labels like `[tóm tắt]`.
+- One note per block, one blank line between notes. No numbers, no bullets,
+  no labels like `[tóm tắt]`.
+- If any note in the file needs several paragraphs, put a line with only
+  `---` between every two notes (blank lines around it are fine). legi then
+  splits only on `---`, and a blank line inside a note stays a paragraph
+  break. Without `---`, never put a blank line inside a note.
 - `# Title` starts a new section, `## Title` a section inside it. The user
   pastes while the right parent section is open in legi, so headings nest
   under it. Use the section names from the book file, so the same section is
