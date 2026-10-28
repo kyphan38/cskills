@@ -67,5 +67,4 @@ Sông Shatt al-Arab, ở biên giới phía tây Iran giáp Iraq, là chỗ hở
 - Kiến thức ngoài sách nằm trên một dòng riêng, bắt đầu bằng "Ngoài sách:"
 - Lời khen chê của tác giả được ghi là "Theo sách, ..."
 - Sách có số trang thì mỗi ghi chú kết thúc bằng ` p52`, legi tự gán số trang cho từng câu
-- Ghi chú nào cần nhiều đoạn thì các ghi chú được ngăn bằng dòng `---`, legi chỉ tách ở đó
 - Đọc PDF cần `brew install poppler` một lần
