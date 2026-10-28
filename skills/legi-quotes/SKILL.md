@@ -63,8 +63,11 @@ If a book file already exists, show it and ask if the user wants to change it.
 - If a book file exists for this source, use it (profile, names, Done) and
   update it after. If not, guess the profile and say which one you used.
 
-A long source (over ~4,000 characters) is still read window by window, so
-each part gets a close look. Number and dedupe across the whole run.
+Every mode works one window at a time, also for a whole chapter: read about
+3,500 characters, write the notes for that window, then read the next one.
+Never read a whole chapter first and write after: a close look per window is
+the point. A story that runs past a window is finished in the next one before
+its card is written. Dedupe across the whole run.
 
 ## Reading a PDF
 
@@ -148,8 +151,11 @@ already in legi). Format for legi's paste:
   pastes while the right parent section is open in legi, so headings nest
   under it. Use the section names from the book file, so the same section is
   not made twice.
-- Do not add page numbers like `p52`: legi reads a page only at the end of
-  the whole paste, not per note. Say the page range in the chat instead.
+- If the source has page numbers (a PDF, or a text with page marks), end
+  each note with ` p52`: the page where the note's story or idea starts,
+  after the last word of the last line. legi reads it per note; a note
+  without one takes the page of the note before it. Pasted text without
+  page marks gets no page numbers.
 
 ## Book file format
 
