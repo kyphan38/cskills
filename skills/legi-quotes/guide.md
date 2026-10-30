@@ -42,10 +42,15 @@ hand and looked at his watch. It was a prearranged signal.
 ```
 
 ```output
-Bối cảnh: Gaza, cuối hè năm 1971. Đại úy Meir Dagan, 26 tuổi, chỉ huy đơn vị biệt kích Rimon.
-Diễn biến: Giữa một cơn bão, vài người Palestine ướt sũng nhảy khỏi chiếc thuyền cũ, chạy trốn một tàu phóng lôi Israel. Sáng hôm sau, họ ngồi vào bàn với các chỉ huy ở trại Jabalia.
-Khoảnh khắc nghẹt thở: Người quàng khăn đỏ hỏi "Bắt đầu được chưa?", rồi giơ tay xem đồng hồ. Đó là ám hiệu.
-Kết cục: Chưa tới một phút, cả nhóm chỉ huy chết. Người quàng khăn đỏ chính là Meir Dagan.
+--- p1
+Bối cảnh: Gaza, cuối hè năm 1971. Đại úy Meir Dagan, 26 tuổi, chỉ huy đơn vị biệt kích Rimon
+
+Diễn biến: Giữa một cơn bão, vài người Palestine ướt sũng nhảy khỏi chiếc thuyền cũ, chạy trốn một tàu phóng lôi Israel. Sáng hôm sau, họ ngồi vào bàn với các chỉ huy ở trại Jabalia
+
+Khoảnh khắc nghẹt thở: Người quàng khăn đỏ hỏi "Bắt đầu được chưa?", rồi giơ tay xem đồng hồ. Đó là ám hiệu
+
+Kết cục: Chưa tới một phút, cả nhóm chỉ huy chết. Người quàng khăn đỏ chính là Meir Dagan
+
 Bài học: Vỏ bọc tốt nhất là vỏ bọc mà chính kẻ địch giúp bạn dựng lên
 ```
 
@@ -58,13 +63,14 @@ vào theo cả hai hướng...
 ```
 
 ```output
+--- p52
 Sông Shatt al-Arab, ở biên giới phía tây Iran giáp Iraq, là chỗ hở duy nhất trong bức tường núi Zagros. Nhưng đây là cánh cổng đi được cả hai chiều. Vì vậy người Ba Tư luôn tìm cách kiểm soát nó: khi mở để tiến ra ngoài, khi đóng chặt lại
 ```
 
 ## Lưu ý
 
-- Luôn viết tiếng Việt, không in đậm, không chấm cuối câu
-- Kiến thức ngoài sách nằm trên một dòng riêng, bắt đầu bằng "Ngoài sách:"
-- Lời khen chê của tác giả được ghi là "Theo sách, ..."
-- Sách có số trang thì mỗi ghi chú kết thúc bằng ` p52`, legi tự gán số trang cho từng câu
+- Luôn viết tiếng Việt, không in đậm, không chấm cuối đoạn
+- Mỗi ghi chú bắt đầu bằng dòng `--- p52` (số trang), nguồn không có số trang thì chỉ `---`
+- Ghi chú có nhiều đoạn thì các đoạn cách nhau một dòng trống
+- Kiến thức ngoài sách viết bình thường, không ghi "Theo sách" hay "Ngoài sách"
 - Đọc PDF cần `brew install poppler` một lần

@@ -121,9 +121,10 @@ later, with no chapter around it.
   "quốc hữu hóa (chuyển thành của nhà nước)".
 - Never use the em dash. Use ` - `, a comma, or two sentences.
 - No bold: never write `**...**` (the owner's style).
-- No period at the end of a note (the owner's style). Inside a multi-line
-  note, every line except the last ends with `.`, `:` or `?`, and every line
-  starts with a capital letter - legi keeps the line break only then.
+- No period at the end of a paragraph (the owner's style). Periods between
+  sentences inside a paragraph stay. A paragraph may end with `:` or `?`.
+- A note with several parts (a list, a story card) puts each part in its
+  own paragraph, with one blank line between paragraphs.
 
 **Book and outside knowledge.**
 
@@ -131,18 +132,14 @@ later, with no chapter around it.
 - You may add a little outside knowledge when it makes a note clearer or
   gives needed context (who someone is, what a term means, how two people are
   related, what happened next). Keep it short and well known.
-- Small context words inside a sentence need no mark: "vùng Lưỡng Hà (Iraq
-  và Syria ngày nay)".
-- A whole fact or sentence from outside the book goes on its own last line:
-  `Ngoài sách: ...` (`Ngoài video: ...` for a talk). Never mix outside facts
-  into the source's claims without that line. If you are not sure a fact is true, leave it out.
-- When the book gives its own judgment (praise, blame, "the best", "the
-  first"), say it is the book's view: "Theo sách, ..." (for a talk: "Theo
-  anh Duy, ...", the speaker's name).
+- Write outside facts normally, with no label: never `Theo sách`, `Ngoài sách`,
+  `Ngoài video` or similar. Context words fit inside a sentence: "vùng
+  Lưỡng Hà (Iraq và Syria ngày nay)". A longer outside fact gets its own
+  paragraph. If you are not sure a fact is true, leave it out.
 - Never add your own comment, irony or conclusion ("Người sau này làm giám
   đốc Mossad từng bị loại..."). If a sentence is neither in the book nor a
-  known fact on a `Ngoài sách:` line, delete it before you show the notes.
-  Do not leave it for the user to delete.
+  known fact, delete it before you show the notes. Do not leave it for the
+  user to delete.
 
 **What to skip.** Filler, repeats, small talk of the author, ideas already
 in the book file's `Done` list (unless the new part adds something - then
@@ -166,17 +163,30 @@ If that name is taken, add `-2`, `-3`, ... (`mossad_legi_p28-36-2.txt`).
 Check with `ls` before writing. The same goes for saved pasted text
 (`passage_<date>.txt`, then `passage_<date>-2.txt`). Format for legi's paste:
 
-- One note per block, one blank line between notes. No blank line inside a
-  note. No numbers, no bullets, no labels like `[tóm tắt]`.
-- `# Title` starts a new section, `## Title` a section inside it. The user
-  pastes while the right parent section is open in legi, so headings nest
-  under it. Use the section names from the book file, so the same section is
-  not made twice.
-- If the source has page numbers (a PDF, or a text with page marks), end
-  each note with ` p52`: the page where the note's story or idea starts,
-  after the last word of the last line. legi reads it per note; a note
-  without one takes the page of the note before it. Pasted text without
-  page marks gets no page numbers.
+- Every note starts with its own line `--- p52`: three dashes, a space and
+  the page where the note's story or idea starts. A source with no page
+  numbers (pasted text without page marks) uses `---` alone.
+- Inside a note, one blank line between paragraphs. No numbers, no bullets,
+  no labels like `[tóm tắt]`.
+- `# Title` starts a new section, `## Title` a section inside it. A heading
+  goes on its own line before the `---` of the section's first note. The
+  user pastes while the right parent section is open in legi, so headings
+  nest under it. Use the section names from the book file, so the same
+  section is not made twice.
+
+Example:
+
+```
+--- p13
+Meir Dagan trong các cuộc chiến của Israel:
+
+Chiến tranh Yom Kippur (1973): Dagan là một trong những người Israel đầu tiên vượt kênh đào Suez (Ai Cập), trong một đơn vị trinh sát
+
+Chiến tranh Lebanon (1982): Dagan dẫn lữ đoàn thiết giáp của mình tiến vào Beirut. Ông nói: "Ngay cả trước khi lữ đoàn xe tăng của tôi vào Beirut, tôi đã biết rõ thành phố này"
+
+--- p14
+Meir Dagan, giám đốc Mossad (2002-2011), ...
+```
 
 ## Book file format
 
@@ -209,7 +219,8 @@ Keep `Done` lines short: page, topic, a few words. It is for dedupe, not a copy.
    - the notes themselves, each tagged with its form from the profile
      (`[nguyên văn]`, `[rút gọn]`, `[tóm tắt]`, `[story]`, `[nhân vật]`,
      `[câu hay]`, `[nguyên tắc]`, `[quy tắc]`, `[câu mẫu]`,
-     `[bức tranh lớn]`), plus `+ngoài sách` when it has an outside line.
+     `[bức tranh lớn]`), plus `+ngoài sách` when it has outside facts
+     (only in chat, never in the file).
      A quote with added context is `[câu hay]`, not `[nguyên văn]`,
    - one line: "Đã copy, mở đúng section trong legi rồi dán vào ô nhập."
 3. Stop. Do not open legi or change anything else.

@@ -7,15 +7,19 @@ story is kept whole.
 ## Note forms
 
 1. **Story card** - one whole story in one note. It may be long (300 words
-   or more is fine). Never cut a good story to save space. Lines, each on its
-   own line, no blank line between them:
+   or more is fine). Never cut a good story to save space. Each part is its
+   own paragraph, with one blank line between them:
 
    ```
-   Bối cảnh: who, where, when, what was at stake.
-   Diễn biến: what happened, in order, with the names and details that make it real.
-   Khoảnh khắc nghẹt thở: the moment it could have failed.
-   Kết cục: how it ended and what came after.
-   Bài học: the method behind it, in one or two lines.
+   Bối cảnh: who, where, when, what was at stake
+
+   Diễn biến: what happened, in order, with the names and details that make it real
+
+   Khoảnh khắc nghẹt thở: the moment it could have failed
+
+   Kết cục: how it ended and what came after
+
+   Bài học: the method behind it, in one or two lines
    ```
 
    Drop a line that has nothing to say. A very long story may be split into
@@ -43,9 +47,10 @@ Skip: long setup with no point, praise with no fact behind it.
 ## Point of view
 
 Story books often take one side. Write what happened as fact only when the
-book gives it as fact. Put the book's praise or blame as "Theo sách, ...".
-If the event is known to be disputed and you know it well, add one
-`Ngoài sách:` line. Do not glorify killing; tell it plainly.
+book gives it as fact. Keep the book's praise or blame tied to who says it
+("Harel gọi đây là ..."), with no "Theo sách" label. If the event is known
+to be disputed and you know it well, add one short paragraph with the other
+view. Do not glorify killing; tell it plainly.
 
 ## Sections
 

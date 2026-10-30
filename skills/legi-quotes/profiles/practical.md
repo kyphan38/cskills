@@ -15,7 +15,7 @@ or to say.
    "Sai: 'Anh sai rồi.' → Đúng: 'Em hiểu khác một chút, mình xem lại số này nhé?'"
 4. **Câu hay** - a sharp line from the author, short.
 5. **Bức tranh lớn** - at the end of a chapter, the 3 to 5 ideas that matter
-   most, as a short list on separate lines.
+   most, one short paragraph each, with a blank line between them.
 
 ## What to pick
 

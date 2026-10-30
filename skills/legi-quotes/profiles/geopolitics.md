@@ -12,8 +12,8 @@ For books on geography, politics, the history of countries, economics
 3. **Tóm tắt** - an idea spread over a passage, in 1 to 4 sentences.
 4. **Bối cảnh** - a short card on a key person or term the reader needs, e.g.
    who Darius I was and how he was related to Cyrus II, or what split Sunni
-   and Shia. Mostly outside knowledge, so mark it with `Ngoài sách:` unless
-   the book says it.
+   and Shia. Mostly outside knowledge: keep it short, well known and sure,
+   with no `Ngoài sách` label.
 5. **Bức tranh lớn** - when a chapter ends (or the user asks), 1 to 3 cards
    that link the chapter's ideas in a chain of causes:
    "Núi biến Iran thành pháo đài → nhưng chia cắt các dân tộc → nên chính

@@ -25,7 +25,8 @@ speaker's own voice: direct, blunt, real. So the speaker's words come first.
    polite, keep his way of talking ("mấy em", "đơn giản là thế đó").
 2. **Hỏi đáp** - when the answer only makes sense with the question:
    ```
-   Hỏi: <the viewer's question, cleaned, one line>.
+   Hỏi: <the viewer's question, cleaned, one line>
+
    Anh Duy: <his answer in his words, cut but not rewritten>
    ```
 3. **Rút gọn** - a long answer cut down. Keep his key sentences word for
@@ -39,10 +40,11 @@ speaker's own voice: direct, blunt, real. So the speaker's words come first.
 - Swearing and insults: keep a strong word when it is the point of the
   sentence. Drop swearing used as filler, and insults thrown at a viewer
   ("mày bị ngu hả"), unless the owner asked to keep them (see the book file).
-- Every note says who is speaking: "Anh Duy:" or "Theo anh Duy, ...".
+- Every note says who is speaking: "Anh Duy:" or "Anh Duy nói ...".
   His claims are his view, not facts.
 - If he states a fact that is clearly wrong and you know it well, add one
-  line `Ngoài video: ...` with the right fact. Do not argue with opinions.
+  short paragraph with the right fact, with no `Ngoài video` label. Do not
+  argue with opinions.
 - No need to name him in every sentence, but the note must still stand
   alone: the topic must be clear without the video (who protests where,
   which country, which year).
