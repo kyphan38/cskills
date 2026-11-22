@@ -1,5 +1,5 @@
 ---
-summary: Làm thẻ Anki kiến thức DevOps và AI infra từ chủ đề hoặc docs của bạn
+summary: Làm thẻ Anki kiến thức DevOps và AI infra từ chủ đề, notes của bạn và PDF gốc
 family: anki
 order: 4
 ---
@@ -10,20 +10,37 @@ Bạn đang học Linux, bash, networking, DNS, containers, Kubernetes, observab
 
 ## Lệnh
 
-- `/anki-tech scan <chủ đề>` - Liệt kê 15 đến 25 ý tưởng thẻ và vài câu hỏi phỏng vấn mở
-- `/anki-tech scan <file hoặc thư mục>` - Giống trên, nhưng bám theo docs của bạn
-- `/anki-tech cards 1-5,8,I1` - Viết thẻ cho những số bạn chọn, tự kiểm tra, rồi đưa vào Anki
-- `/anki-tech cards all` - Làm cả danh sách
+- `/anki-tech scan <chủ đề>` - Chia chủ đề thành vài phần, đọc phần đầu
+- `/anki-tech scan notes/dns.md --pdf book.pdf --pages 40-75` - Notes là nguồn chính, PDF để đối chiếu
+- `/anki-tech next` - Đọc phần (window) tiếp theo
+- `/anki-tech status` - Xem đã đọc tới đâu
+- `/anki-tech cards 1-5,8,G1,I1` - Viết thẻ cho những số bạn chọn, tự kiểm tra, rồi đưa vào Anki
 
 ## Các bước
 
 1. Mở Anki (cần add-on AnkiConnect)
-2. Chạy `scan`. Skill bỏ qua những thẻ bạn đã có trong deck `tech::devops`
-3. Đọc file `_tech-scan.txt`, chọn số. Số có chữ `I` là câu hỏi phỏng vấn mở
-4. Chạy `cards`. Thẻ được thêm thẳng vào Anki
-5. Xem lại các thẻ có tag `check` trước khi học
+2. Chạy `scan`. Skill chia nguồn thành các window, khoảng 6.000 ký tự notes hoặc vài trang PDF, rồi đọc window đầu
+3. Mỗi lần `next` chỉ đọc 1 window cho kỹ. Không có số câu cố định: window nhiều kiến thức thì nhiều ý tưởng
+4. Đọc file `_tech-scan.txt` và `_notes-fix.md`, sửa notes nếu cần
+5. Chạy `cards` bất cứ lúc nào, không cần đợi đọc hết
+6. Xem lại các thẻ có tag `check` trước khi học
+
+## Trong file scan có gì
+
+- `V1, V2...` - Chỗ notes sai (WRONG), cũ (OUTDATED) hoặc mơ hồ (UNCLEAR) so với PDF và kiến thức hiện tại. Chỗ nào nghi ngờ thì skill tìm web để xác nhận
+- `1, 2, 3...` - Ý tưởng thẻ, ghi rõ từ notes, pdf hay cả hai
+- `G1, G2...` - Kiến thức quan trọng mà cả notes và PDF đều thiếu. Có sau khi đọc hết
+- `I1, I2...` - Câu hỏi phỏng vấn mở để luyện nói
+- Mỗi window ghi rõ đã đọc gì và bỏ qua gì
 
 ## Ví dụ
+
+### Một mục review
+
+```output
+V3. WRONG - dns.md L52: "CNAME can be used at the zone apex"
+    PDF p.53: a CNAME cannot sit next to other records, so not at the apex. Web: confirmed by RFC 1034
+```
 
 ### Một thẻ
 
@@ -44,8 +61,10 @@ Tag: containers troubleshoot mid
 ## Lưu ý
 
 - Thẻ viết bằng tiếng Anh đơn giản. Mỗi thẻ chỉ một ý, trả lời trong 5 đến 15 giây
-- Phần A tối đa khoảng 25 từ, phần X tối đa 3 dòng
+- Skill không tự sửa notes của bạn. Câu đề xuất sửa nằm trong `_notes-fix.md`
+- Trang PDF nào không khớp với notes sẽ thành window riêng ở cuối, nên không bỏ sót trang nào
+- Thẻ từ gap luôn có tag `extra`
 - Tag cố định: type (troubleshoot, mechanism, tradeoff, cli, compare, number, outline), domain (8 cái) và level (foundation, mid, senior)
-- Source chỉ ghi tên tài liệu để tra, không có link
-- Câu hỏi phỏng vấn mở không vào Anki. Chúng được lưu ở `~/Documents/anki-tech/interview-questions.md` để luyện nói
+- Source chỉ ghi tên tài liệu hoặc số trang, không có link
+- Câu hỏi phỏng vấn mở được lưu ở `~/Documents/anki-tech/interview-questions.md`
 - Lọc ôn trước phỏng vấn: tạo Filtered Deck, ví dụ `deck:tech::devops tag:troubleshoot`
