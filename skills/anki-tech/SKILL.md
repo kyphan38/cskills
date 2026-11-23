@@ -1,7 +1,7 @@
 ---
 name: anki-tech
-description: Turn a tech topic (e.g. "DNS caching", "KV cache"), the user's own notes, an original PDF, or notes + PDF together into Anki flashcards for a mid/senior DevOps and AI infra role. Works one window at a time and remembers its place ("next" continues). Each window checks the notes against the PDF and current knowledge (web search when they disagree), lists card ideas, and at the end lists important gaps and interview questions. "cards" writes short Basic cards for the numbers the user picks and adds them to Anki through AnkiConnect. Covers Linux, bash, networking, DNS, containers, Kubernetes, observability, AI infra. Use when the user wants tech or DevOps flashcards or runs /anki-tech.
-argument-hint: scan <topic | notes...> [--pdf file] [--pages 40-75] | next [slug] | status [slug] | cards [slug] <numbers|all>
+description: Turn a tech topic (e.g. "DNS caching", "KV cache"), the user's own notes (e.g. arca notes, which keep only the key points), the full original (PDF, .srt subtitles, a doc page), or notes + original together into Anki flashcards for a mid/senior DevOps and AI infra role. Works one window at a time and remembers its place ("next" continues). Each window checks the notes against the original and current knowledge (web search when they disagree), lists card ideas, and at the end lists important gaps and interview questions. "cards" writes short Basic cards for the numbers the user picks and adds them to Anki (deck arca::<domain>) through AnkiConnect, skipping what arca's /cards already made. Covers Linux, bash, networking, DNS, containers, Kubernetes, observability, AI infra, AWS, security. Use when the user wants tech or DevOps flashcards or runs /anki-tech.
+argument-hint: scan <topic | notes...> [--ref pdf|srt|txt|url] [--pages 40-75] | next [slug] | status [slug] | cards [slug] <numbers|all>
 allowed-tools: Bash(python3 *)
 ---
 
@@ -18,10 +18,13 @@ Scripts:
 - `T=~/.claude/skills/anki-tech/scripts/tech.py` (cards -> Anki)
 - `R=~/.claude/skills/anki-tech/scripts/sources.py` (windows and state)
 
-Deck: `tech::devops` (one deck; filter by tag with a Filtered Deck).
+Decks: `arca::<domain>` (e.g. `arca::linux`, `arca::dns`), the same parent
+deck as the arca repo's `/cards`, so reviewing `arca` reviews everything.
+Filter by tag with a Filtered Deck.
 Interview questions file: `~/Documents/anki-tech/interview-questions.md`
 
-Files in the current folder, per topic (`<slug>`: lower-case, hyphens):
+Work files, one folder per topic: `W=~/Documents/anki-tech/<slug>/`
+(`<slug>`: lower-case, hyphens). Never write them into a repo such as arca.
 
 | File | What |
 |---|---|
@@ -30,8 +33,8 @@ Files in the current folder, per topic (`<slug>`: lower-case, hyphens):
 | `<slug>_notes-fix.md` | suggested fixes for the user's notes |
 | `<slug>_tech.txt` | the written cards |
 
-When `[slug]` is left out, use the only `*_tech-state.json` in the folder; if
-there are several, ask which one.
+When `[slug]` is left out, use the topic folder in `~/Documents/anki-tech/`
+whose state file changed last, and say which one.
 
 Do only the mode asked for, then stop.
 
@@ -51,7 +54,8 @@ One card = one idea. The user should recall the answer in 5 to 15 seconds.
   or the follow-up question an interviewer would ask next.
 - **S** (source): the name of a place to look it up, never a URL. E.g.
   `man 7 tcp`, `Kubernetes docs: Pod Lifecycle`, `RFC 1035`, `dns.md: TTL`,
-  `DNS and BIND, p.52` (short PDF title + page).
+  `DNS and BIND, p.52` (short title of the original + page; for a text
+  original such as subtitles, the lesson name).
 
 Every card has exactly one type, one domain and one level. Use only these
 tags, never invent new ones:
@@ -59,9 +63,9 @@ tags, never invent new ones:
 | Group | Allowed |
 |---|---|
 | type | `troubleshoot` (symptom -> cause), `mechanism` (how it works under the hood), `tradeoff` (why X over Y, design choice), `cli` (the command for a real task), `compare` (A vs B), `number` (exit codes, ports, limits, latencies), `outline` (the steps of a flow, names only) |
-| domain | `linux`, `bash`, `networking`, `dns`, `containers`, `kubernetes`, `observability`, `ai-infra` |
+| domain | `linux`, `bash`, `networking`, `dns`, `containers`, `kubernetes`, `observability`, `ai-infra`, `aws`, `security` |
 | level | `foundation`, `mid`, `senior` |
-| flag | `check` (not fully sure it is right), `extra` (not in the user's notes or PDF) |
+| flag | `check` (not fully sure it is right), `extra` (not in the user's notes or the original) |
 
 If a topic fits no domain, tell the user and suggest adding one to this list;
 do not tag it with something else.
@@ -90,17 +94,29 @@ the scan file, and stops. The user says `/anki-tech next` for the next one.
 ## Mode `scan` - set up and read window 1
 
 Inputs: notes (one or more files, or a folder: its `.md`/`.txt` files in name
-order), a PDF with `--pdf` and optional `--pages`, or only a topic name.
-Pasted notes: save them first as `<slug>_notes.md` in the current folder.
+order), the full original with `--ref` and optional `--pages`, or only a
+topic name. Pasted notes: save them first as `$W<slug>_notes.md`.
 
-Roles: **notes are the main source** (ideas come mostly from them). **The PDF
-is the reference**: use it to check the notes and to add details the notes
-miss. PDF pages that no notes window used become windows of their own at the
-end, so nothing in the range is skipped.
+The original (`--ref`) can be:
+- a PDF (pages are real pages),
+- a text file: `.srt` subtitles (timestamps are removed), `.txt`, `.md`. It
+  is cut into "pages" of about 3,000 characters,
+- a web page: fetch it (WebFetch), save the main text as `<slug>_ref.md` in
+  `$W`, and pass that file.
+
+Roles: **notes are the main source** (ideas come mostly from them). **The
+original is the reference**: use it to check the notes and to add what the
+notes leave out. The user's notes (e.g. in the arca repo) often keep only the
+key points, so the original matters: its pages that no notes window used
+become windows of their own at the end, so nothing in the range is skipped.
+
+In the arca repo: the user writes the note first (`/lesson`, `/lesson done`).
+Cards from the note's own `## Questions` come from arca's `/cards`; this skill
+adds cards for what the note leaves out. Never write into arca notes.
 
 1. Set up the windows:
-   - Notes and/or PDF:
-     `python3 $R init <slug> --notes <files> --pdf <file> --pages <ranges>`
+   - Notes and/or original:
+     `python3 $R init <slug> --notes <files> --ref <file> --pages <ranges>`
    - A big PDF with no `--pages`: read its table of contents first (the Read
      tool with `pages`, or `pdftotext -f 1 -l 15 <file> -`). Pick the chapters
      that match the notes or the topic, tell the user the page ranges you
@@ -109,8 +125,10 @@ end, so nothing in the range is skipped.
      (one part for a small topic). Pass them with `--topic-parts "..." "..."`.
 2. Show the plan from the init output: how many windows, and their labels.
 3. If Anki is open, get the cards the user already has:
-   `python3 $T fronts` (or `--tag <domain>`). Never propose an idea that is
-   already there. If Anki is closed, skip this and say so.
+   `python3 $T fronts` (every card under `arca`, including the ones arca's
+   `/cards` made; `--deck arca::<domain>` for one domain). Never propose an
+   idea that is already there, even in other words. If Anki is closed, skip
+   this and say so.
 4. Read window 1 (see "Each window" below).
 
 ## Mode `next` - read the next window
@@ -123,38 +141,41 @@ end, so nothing in the range is skipped.
 ## Each window
 
 1. Read the window from the `next` output (notes show `L<n>:` line numbers).
-2. For a notes window with a PDF: find the matching pages with
+2. For a notes window with an original: find the matching pages with
    `python3 $R find <slug> <key words>`, then read them with
    `python3 $R page <slug> <pages>` (this marks them as used). Read only the
    pages that match, usually 1 to 6.
-3. **Review** (notes and PDF windows):
-   - Notes vs PDF: what the notes get wrong, leave out in a way that changes
-     the meaning, or say in a vague way.
-   - Notes and PDF vs current practice: what is outdated (e.g. iptables vs
+3. **Review** (notes and original windows):
+   - Notes vs original: what the notes get wrong, leave out in a way that
+     changes the meaning, or say in a vague way. Leaving out a detail is not
+     a review item (the notes keep only key points); it becomes a card idea.
+   - Notes and original vs current practice: what is outdated (e.g. iptables vs
      nftables, dockershim, cgroup v1, old API versions).
-   - When you disagree with the PDF or the notes, or you are not sure, check
+   - When you disagree with the original or the notes, or you are not sure, check
      with WebSearch (load it with ToolSearch if it is deferred). Prefer
      official docs, RFCs, man pages and kernel docs. Write which site
      confirmed it. If it is still unclear, say so; never guess.
    - Labels: `WRONG`, `OUTDATED`, `UNCLEAR`. Only real problems, not style.
 4. **Card ideas**: follow "Pace" above. Mark where each idea comes from:
-   `(notes)`, `(pdf)` or `(notes+pdf)`. An idea always uses the corrected
+   `(notes)`, `(ref)` or `(notes+ref)`. Ideas the original covers but the
+   notes skipped are the main value here: include every one that matters for
+   the role. An idea always uses the corrected
    facts from the review, never the wrong version.
-5. Append this window's section to `<slug>_tech-scan.txt`, numbers from the
+5. Append this window's section to `$W<slug>_tech-scan.txt`, numbers from the
    `next` output (they keep going across windows):
 
    ```
-   ### Window 2/6: Caching / TTL (dns.md L40-95, PDF p.52-55)
+   ### Window 2/6: Caching / TTL (dns.md L40-95, ref p.52-55)
    Covered: caching, TTL, negative answers
    Skipped: BIND config syntax (not useful for the role)
 
    V3. WRONG - dns.md L52: "CNAME can be used at the zone apex"
        PDF p.53: a CNAME cannot sit next to other records, so not at the apex. Web: confirmed by RFC 1034
-   14. [mechanism/dns/foundation] (notes+pdf) What a recursive resolver does for the client
+   14. [mechanism/dns/foundation] (notes+ref) What a recursive resolver does for the client
    15. [troubleshoot/dns/mid] (notes) Old IP still returned after a record change
    ```
 
-6. For each `V` item, append to `<slug>_notes-fix.md` (create it with a
+6. For each `V` item, append to `$W<slug>_notes-fix.md` (create it with a
    `# Notes fixes: <slug>` title):
 
    ```
@@ -175,7 +196,7 @@ end, so nothing in the range is skipped.
 When `next` says `ALL WINDOWS DONE`, look at the whole topic once and append:
 
 ```
-### Gaps (not in the notes or PDF)
+### Gaps (not in the notes or the original)
 G1. [mechanism/dns/mid] Negative caching (NXDOMAIN TTL comes from the SOA) - common in debugging questions
 
 ### Interview (speaking practice)
@@ -222,15 +243,16 @@ ideas and gaps; `I` only when named). The user may run it between windows.
    `debian:stable-slim` (install the package first if needed). Never guess
    flags.
 
-3. Write `<slug>_tech.txt`. If it exists, append and skip numbers already in
+3. Write `$W<slug>_tech.txt`. If it exists, append and skip numbers already in
    it.
 
 4. Lint: `python3 $T check <file>`. Fix every error, and fix the warnings
    (too long, yes/no) unless there is a good reason. Run it again until clean.
 
-5. Push: `python3 $T push <file>`. It creates the note type `Anki Tech`
-   (fields Front, Answer, Extra, Source) and the deck if needed, and skips
-   cards whose front is already in the deck.
+5. Push: `python3 $T push <file>`. Each card goes to `arca::<domain>`. It
+   creates the note type `Anki Tech` (fields Front, Answer, Extra, Source)
+   and the decks if needed, and skips cards whose front is already in the
+   deck.
    If AnkiConnect is not reachable, tell the user to open Anki. If they want
    a file instead: `python3 $T tsv <file>`, then File -> Import in Anki.
 

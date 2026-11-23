@@ -1,11 +1,13 @@
 """Tech flashcard text file -> Anki through AnkiConnect.
 
   python3 tech.py check <cards.txt> [--deck D]
-      Parse and lint the cards, show which ones are already in the deck.
+      Parse and lint the cards, show which ones are already in their deck.
   python3 tech.py push <cards.txt> [--deck D]
-      Add the new cards to Anki (note type "Anki Tech").
-  python3 tech.py fronts [--deck D] [--tag T]
-      List the Front of every card in the deck (optionally one tag), one per line.
+      Add the new cards to Anki (note type "Anki Tech"). Each card goes to
+      arca::<domain>, unless --deck puts them all in one deck.
+  python3 tech.py fronts [--deck D]
+      List the front of every card under a deck (default: arca, all note
+      types, so cards made by arca's /cards count too), one per line.
   python3 tech.py tsv <cards.txt> [-o out.txt]
       Fallback when Anki is closed: TSV file for File -> Import.
 
@@ -29,9 +31,10 @@ import urllib.request
 
 ANKI_URL = "http://127.0.0.1:8765"
 MODEL = "Anki Tech"
-DEFAULT_DECK = "tech::devops"
+PARENT_DECK = "arca"  # one parent deck: review "arca" to review everything
 
-DOMAINS = {"linux", "bash", "networking", "dns", "containers", "kubernetes", "observability", "ai-infra"}
+DOMAINS = {"linux", "bash", "networking", "dns", "containers", "kubernetes", "observability", "ai-infra",
+           "aws", "security"}
 TYPES = {"troubleshoot", "mechanism", "tradeoff", "cli", "compare", "number", "outline"}
 LEVELS = {"foundation", "mid", "senior"}
 FLAGS = {"check", "extra"}
@@ -143,6 +146,7 @@ def parse_file(path):
             "Source": inline(" ".join(f["S"])),
         }
         card["tags"] = [dom, typ, lvl] + [fl for fl in flags if fl in FLAGS]
+        card["domain"] = dom
         cards.append(card)
     return cards, errors
 
@@ -170,9 +174,13 @@ def anki(action, **params):
     return res["result"]
 
 
-def note(card, deck):
+def deck_of(card, override=None):
+    return override or f"{PARENT_DECK}::{card['domain']}"
+
+
+def note(card, deck=None):
     return {
-        "deckName": deck,
+        "deckName": deck_of(card, deck),
         "modelName": MODEL,
         "fields": card["fields"],
         "options": {"allowDuplicate": False, "duplicateScope": "deck"},
@@ -180,7 +188,7 @@ def note(card, deck):
     }
 
 
-def can_add(cards, deck):
+def can_add(cards, deck=None):
     if MODEL not in anki("modelNames"):
         return [True] * len(cards)
     return anki("canAddNotes", notes=[note(c, deck) for c in cards])
@@ -216,7 +224,8 @@ def cmd_push(a):
                  css=CSS, isCloze=False,
                  cardTemplates=[{"Name": "Card 1", "Front": FRONT_TMPL, "Back": BACK_TMPL}])
             print(f"Created note type: {MODEL}")
-        anki("createDeck", deck=a.deck)
+        for d in sorted({deck_of(c, a.deck) for c in cards}):
+            anki("createDeck", deck=d)
         new = [c for c, ok in zip(cards, can_add(cards, a.deck)) if ok]
         if not new:
             print("Nothing new to add.")
@@ -225,23 +234,27 @@ def cmd_push(a):
     except ConnectionError as e:
         sys.exit(str(e))
     added = sum(1 for i in ids if i)
-    print(f"Added {added} notes to deck '{a.deck}', {len(cards) - len(new)} already there")
+    decks = ", ".join(sorted({deck_of(c, a.deck) for c in new}))
+    print(f"Added {added} notes to {decks}; {len(cards) - len(new)} already there")
     checks = [c["num"] for c in new if "check" in c["tags"]]
     if checks:
         print(f"Tagged 'check' (verify before learning): #{', #'.join(checks)}")
 
 
 def cmd_fronts(a):
-    q = f'"deck:{a.deck}" "note:{MODEL}"' + (f" tag:{a.tag}" if a.tag else "")
+    # Any note type: arca's /cards uses Basic, this skill uses Anki Tech
     try:
-        ids = anki("findNotes", query=q)
+        ids = anki("findNotes", query=f'"deck:{a.deck}"')
         infos = anki("notesInfo", notes=ids)
+        first_cards = [n["cards"][0] for n in infos if n.get("cards")]
+        decks = {c["cardId"]: c["deckName"] for c in anki("cardsInfo", cards=first_cards)}
     except ConnectionError as e:
         sys.exit(str(e))
     for n in infos:
-        front = n["fields"]["Front"]["value"]
-        text = html.unescape(re.sub(r"<[^>]+>", "", front.replace("<br>", " ")))
-        print(f"[{' '.join(sorted(n['tags']))}] {text}")
+        first = min(n["fields"].values(), key=lambda f: f["order"])["value"]
+        text = html.unescape(re.sub(r"<[^>]+>", "", first.replace("<br>", " ")))
+        deck = decks.get(n["cards"][0], a.deck) if n.get("cards") else a.deck
+        print(f"[{deck}] {text}")
 
 
 def cmd_tsv(a):
@@ -249,7 +262,7 @@ def cmd_tsv(a):
     out = a.output or re.sub(r"\.txt$", "", a.cards) + "_anki.txt"
     q = lambda s: '"' + s.replace('"', '""') + '"'
     with open(out, "w", encoding="utf-8") as f:
-        f.write("#separator:tab\n#html:true\n#notetype:Basic\n#columns:Front\tBack\tTags\n")
+        f.write("#separator:tab\n#html:true\n#notetype:Basic\n#deck column:4\n#columns:Front\tBack\tTags\tDeck\n")
         for c in cards:
             fl = c["fields"]
             back = fl["Answer"]
@@ -257,7 +270,7 @@ def cmd_tsv(a):
                 back += "<br><br>" + fl["Extra"]
             if fl["Source"]:
                 back += "<br><br><small>" + fl["Source"] + "</small>"
-            f.write(q(fl["Front"]) + "\t" + q(back) + "\t" + " ".join(c["tags"]) + "\n")
+            f.write(q(fl["Front"]) + "\t" + q(back) + "\t" + " ".join(c["tags"]) + "\t" + deck_of(c) + "\n")
     print(f"Wrote {len(cards)} cards to {out} (note type Basic, no Extra/Source fields)")
 
 
@@ -267,11 +280,10 @@ def main():
     for name, fn in (("check", cmd_check), ("push", cmd_push)):
         s = sub.add_parser(name)
         s.add_argument("cards")
-        s.add_argument("--deck", default=DEFAULT_DECK)
+        s.add_argument("--deck", help="put every card in this deck instead of arca::<domain>")
         s.set_defaults(fn=fn)
     s = sub.add_parser("fronts")
-    s.add_argument("--deck", default=DEFAULT_DECK)
-    s.add_argument("--tag")
+    s.add_argument("--deck", default=PARENT_DECK)
     s.set_defaults(fn=cmd_fronts)
     s = sub.add_parser("tsv")
     s.add_argument("cards")

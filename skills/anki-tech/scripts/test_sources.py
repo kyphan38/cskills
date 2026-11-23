@@ -1,6 +1,6 @@
 import unittest
 
-from sources import compact_ranges, group_pages, next_numbers, parse_ranges, split_notes
+from sources import clean_srt, compact_ranges, group_pages, next_numbers, parse_ranges, split_notes, text_pages
 
 
 class Ranges(unittest.TestCase):
@@ -47,6 +47,17 @@ class NextNumbers(unittest.TestCase):
 
     def test_empty(self):
         self.assertEqual(next_numbers(""), {"idea": 1, "V": 1, "G": 1, "I": 1})
+
+
+class TextRef(unittest.TestCase):
+    def test_clean_srt_keeps_spoken_lines_once(self):
+        srt = "1\n00:00:01,000 --> 00:00:02,000\nHello there\n\n2\n00:00:02,000 --> 00:00:03,000\nHello there\nnext line\n"
+        self.assertEqual(clean_srt(srt), "Hello there\nnext line")
+
+    def test_text_pages_cut_at_line_ends(self):
+        pages = text_pages("\n".join(["x" * 10] * 10), size=30)
+        self.assertEqual(len(pages), 4)
+        self.assertTrue(all(len(l) == 10 for p in pages for l in p.splitlines()))
 
 
 if __name__ == "__main__":
