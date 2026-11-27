@@ -1,6 +1,6 @@
 ---
 name: ai-models
-description: Check which Gemini model and thinking level every AI task in the ws/app apps uses, test new or cheaper models side by side on the apps' real prompts (~/ws/app/ai-evals), and recommend per task whether to keep, move down or move up. Use when Google ships a new Gemini model, when prices change, when the user wants to cut AI cost, or runs /ai-models.
+description: Check which Gemini model and thinking level every AI task in the ws/app apps uses, test new or cheaper models side by side on the apps' real prompts (~/ws/app/upkeep/ai-evals), and recommend per task whether to keep, move down or move up. Use when Google ships a new Gemini model, when prices change, when the user wants to cut AI cost, or runs /ai-models.
 argument-hint: [new model ids, e.g. gemini-4-neon gemini-4-carbon]
 allowed-tools: Bash(npm run *), Bash(node *), Bash(git *)
 ---
@@ -9,7 +9,7 @@ allowed-tools: Bash(npm run *), Bash(node *), Bash(git *)
 
 Arguments: `$ARGUMENTS` (model ids to try; none = only check the current setups).
 
-Repo: `~/ws/app/ai-evals`. Read its `README.md` ("How to decide", "Coverage") first.
+Repo: `~/ws/app/upkeep/ai-evals`. Read its `README.md` ("How to decide", "Coverage") first.
 
 ## 1. Facts first
 
@@ -17,7 +17,7 @@ Repo: `~/ws/app/ai-evals`. Read its `README.md` ("How to decide", "Coverage") fi
   changes, free tier). Update `src/prices.json`. Note models that are deprecated or route
   elsewhere.
 - Which models exist for the key: `GET https://generativelanguage.googleapis.com/v1beta/models`
-  through a small node script that loads `../fina/.env.local` itself. Never print or read the key.
+  through a small node script that loads `~/ws/app/fina/.env.local` itself. Never print or read the key.
 - Probe each new model once for the thinking levels it accepts (low, medium, high; `minimal`
   is usually rejected).
 
