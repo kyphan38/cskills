@@ -6,7 +6,7 @@ order: 1
 
 ## Dùng khi
 
-Ngày 1 mỗi tháng Mac hiện thông báo "upkeep: reports ready", hoặc bạn muốn tự kiểm tra
+Ngày 1 mỗi tháng có issue "Upkeep" trên GitHub và thông báo tiền AI trên Mac, có PR Dependabot mới, hoặc bạn muốn tự kiểm tra
 
 ## Lệnh
 
@@ -17,7 +17,7 @@ Ngày 1 mỗi tháng Mac hiện thông báo "upkeep: reports ready", hoặc bạ
 
 ## Các bước
 
-1. Nếu báo cáo cũ hơn 1 tuần thì chạy lại các check
+1. Đọc issue Upkeep mới nhất, báo cáo tiền AI và các PR Dependabot; báo cáo cũ hơn 1 tuần thì chạy lại
 2. Viết kế hoạch theo từng app, hỏi bạn chọn dòng nào làm
 3. Làm từng app: sửa, chạy test, commit
 4. Chỉ push và deploy khi bạn bảo
@@ -39,6 +39,7 @@ Bản lớn chờ bạn quyết: firebase 13, eslint 10, @google/genai 3
 
 ## Lưu ý
 
-- Các check tự chạy lúc 10:30 ngày 1 hằng tháng và chỉ đọc, không sửa gì
+- Quy tắc chung và thư viện chạy trên GitHub Actions, tiền AI chạy trên Mac, đều lúc 10:30 ngày 1
+- Các check chỉ đọc, không sửa gì; PR Dependabot chỉ merge khi CI xanh
 - Bản nâng cấp lớn luôn hỏi bạn trước
 - Nếu test hỏng sau khi cập nhật thì trả lại bản cũ, không ép

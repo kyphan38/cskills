@@ -13,9 +13,15 @@ Repo: `~/ws/app/upkeep`. Read its `README.md` first.
 
 ## 1. Fresh reports
 
-Reports live in `reports/<day>/{lint,deps,costs}.md`. If the newest is older than a
-week, run `npm run lint`, `npm run deps`, `npm run costs` first (deps takes a few
-minutes). `costs` needs `gcloud auth login`; if it says so, ask the user to log in.
+- lint and deps run on GitHub Actions on the 1st and post an issue:
+  `gh issue list -R kyphan38/upkeep -l upkeep -L 1`, then `gh issue view <n>`.
+- costs runs on this Mac (launchd) into `reports/<day>/costs.md`.
+- Also look at open Dependabot pull requests in the app repos
+  (`gh pr list -R kyphan38/<app> --author app/dependabot`): merge only with green CI.
+
+If a report is older than a week, run `npm run lint`, `npm run deps`, `npm run costs`
+locally first (deps takes a few minutes). `costs` needs `gcloud auth login`; if it says
+so, ask the user to log in. Close the issue once its findings are handled.
 
 ## 2. Plan, then ask
 
